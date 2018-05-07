@@ -19,15 +19,28 @@ class PostComments extends Component {
 
                 <Panel.Body>
                           <form>
-                            <FormGroup>
-                            <ControlLabel>Add comment:</ControlLabel>
-                                <InputGroup>
-                                <FormControl type="text" />
-                                <InputGroup.Button>
-                                    <Button>Submit</Button>
-                                </InputGroup.Button>
-                                </InputGroup>
+                          <FormGroup controlId="formControlsSelect">
+                            <ControlLabel>Category</ControlLabel>
+                            <FormControl componentClass="select" placeholder="select">
+                                <option value="select">react</option>
+                                <option value="other">...</option>
+                            </FormControl>
                             </FormGroup>
+                            
+                            <FormGroup>
+                                <ControlLabel>Title</ControlLabel>
+                                <FormControl type="text" />
+                            </FormGroup>
+
+                            <FormGroup controlId="formControlsTextarea">
+                                <ControlLabel>Body</ControlLabel>
+                                <FormControl componentClass="textarea" placeholder="textarea" />
+                            </FormGroup>
+
+
+
+                            <Button>Submit</Button>
+                            
                         </form>
                       
                 </Panel.Body>
