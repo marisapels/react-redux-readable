@@ -23,7 +23,7 @@ export function fetchPostAPI (id) {
 export function fetchCommentsAPI (id) {
   return fetch(`${myApiHost}/posts/${id}/comments`,headers)
   .then(res => res.json())
-  .then(res => [res])
+ 
 } 
 
 export function voteForPostApi (postId,voteUp) {

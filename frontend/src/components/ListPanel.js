@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Panel, Button,DropdownButton,MenuItem } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { sortPosts } from '../actions';
+import {LinkContainer} from 'react-router-bootstrap';
 
 class ListPanel extends Component {
 
@@ -9,6 +10,7 @@ class ListPanel extends Component {
     const postsSortBy = this.props.postsSortBy;
     const sortPosts = this.props.sortPosts;
     return (
+      <div>
             <Panel>
               <Panel.Body>
                         <DropdownButton
@@ -20,9 +22,15 @@ class ListPanel extends Component {
                             <MenuItem eventKey="timestamp">timestamp</MenuItem>
                             <MenuItem eventKey="voteScore">vote score</MenuItem>
                         </DropdownButton>
+                        <LinkContainer to={`/addPost`}>
                       <Button className="pull-right" bsStyle="success" bsSize="xsmall">Add new post</Button>
+                      </LinkContainer>
               </Panel.Body>
             </Panel>
+
+
+
+</div>
             );
           }
         }
