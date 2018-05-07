@@ -11,7 +11,7 @@ class PostsListItem extends Component {
       const postId = this.props.postItemId;
       const postItem = this.props.postItem;
       const voteForPost = this.props.voteForPost;
-
+      const singlePost = this.props.singlePost;
     return (
             <Panel>
                 <Panel.Body>
@@ -25,7 +25,9 @@ class PostsListItem extends Component {
                         </Media.Left>
                         <Media.Body>
                         <Media.Heading>
-                        <Link to={`/${postItem.category}/${postItem.id}`}>Readable{postItem.title}</Link> <Badge><Glyphicon glyph="comment" /> {postItem.commentCount} </Badge>
+                        { !singlePost || postItem.title }
+                        { singlePost || <Link to={`/${postItem.category}/${postItem.id}`}>{postItem.title}</Link> } 
+                        &nbsp;<Badge><Glyphicon glyph="comment" /> {postItem.commentCount} </Badge>
                         </Media.Heading>
                         <p>{postItem.author} </p>     
                         <ButtonGroup>
@@ -33,14 +35,16 @@ class PostsListItem extends Component {
                                     <Button bsStyle="danger" bsSize="xsmall">Delete</Button>
                                 </ButtonGroup> 
                         </Media.Body>
+                        
                     </Media>
+                    { !singlePost || postItem.body } 
                 </Panel.Body>
             </Panel>
             );
           }
         }
 
-//export default PostsListItem;
+
 
 
 

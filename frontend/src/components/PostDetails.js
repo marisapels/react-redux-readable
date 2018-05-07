@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import {fetchPostAPI} from '../utils/api.js';
 import {loadPosts} from '../actions';
 import PostsListItem from './PostsListItem';
+import PostComments from './PostComments';
 import {Jumbotron} from 'react-bootstrap';
 
 class PostDetails extends Component {
@@ -22,9 +23,14 @@ class PostDetails extends Component {
     return (
             <Jumbotron>
                  {posts.map((postItem) => (
-                          <PostsListItem key={postItem.id} postItemId={postItem.id}  />
+                          <div key={postItem.id}>
+                          <PostsListItem key={"post"+postItem.id} postItemId={postItem.id} singlePost />
+                          <PostComments key={"com"+postItem.id} postItemId={postItem.id}  />
+                          </div>
                       ))}
+                         
             </Jumbotron>
+
             );
           }
         }
