@@ -11,17 +11,26 @@ class PostComments extends Component {
 
     state = {
         comments: [],
-        show:false
+        show:false,
+        modalCommentId:0,
+        modalCommentBody:""
       }
 
       componentDidMount(){
         fetchCommentsAPI(this.props.postItemId).then(res => this.setState ( { comments: res}));
       }
 
-
+      constructor(props, context) {
+        super(props, context);
+    
+        this.handleShow = this.handleShow.bind(this);
+        this.handleHide = this.handleHide.bind(this);
+    
+      }
 
       handleShow(id,body) {
-        this.setState({ show: true });
+        this.setState({ show: true,modalCommentId:id,modalCommentBody:body });
+       //console.log(id);
       }
     
       handleHide() {
@@ -45,15 +54,14 @@ class PostComments extends Component {
                 <form>
                     <Modal.Header closeButton>
                         <Modal.Title id="contained-modal-title-lg">
-                            Edit comment - postItem.title
+                            Edit comment 
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                                         
-                        <FormGroup>
-                            <ControlLabel>Title</ControlLabel>
-                            <FormControl type="text"  defaultValue='postItem.title'/>
-                        </FormGroup>
+                        
+                            <FormControl type="text"  defaultValue={this.state.modalCommentBody}/>
+                       
 
                     </Modal.Body>
                     <Modal.Footer>
@@ -75,13 +83,14 @@ class PostComments extends Component {
                            <br/>{c.body}
                            <br/>
                            <ButtonGroup>
-                                    <Button bsSize="xsmall">Edit</Button>
+                                    <Button bsSize="xsmall" onClick={() => this.handleShow(c.id,c.body)}>Edit</Button>
                                     <Button bsStyle="danger" bsSize="xsmall">Delete</Button>
                             </ButtonGroup> 
                            <hr/>
                           </div>
                           
                         ))}
+                      
                           <form>
                             <FormGroup>
                             <ControlLabel>Add comment:</ControlLabel>
