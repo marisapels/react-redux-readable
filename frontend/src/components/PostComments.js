@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Panel, Glyphicon, ButtonGroup, Button, FormGroup, FormControl, ControlLabel, InputGroup} from 'react-bootstrap';
+import { 
+    Panel, Glyphicon, ButtonGroup, Button, FormGroup, FormControl, 
+    ControlLabel, InputGroup, Modal} from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 
@@ -8,11 +10,22 @@ import {fetchCommentsAPI} from '../utils/api.js';
 class PostComments extends Component {
 
     state = {
-        comments: []
+        comments: [],
+        show:false
       }
 
       componentDidMount(){
         fetchCommentsAPI(this.props.postItemId).then(res => this.setState ( { comments: res}));
+      }
+
+
+
+      handleShow(id,body) {
+        this.setState({ show: true });
+      }
+    
+      handleHide() {
+        this.setState({ show: false });
       }
     
   render() {
@@ -24,12 +37,34 @@ class PostComments extends Component {
        // console.log(this.state.comments);
 
     return (
+
+            <div>
+            <Modal  
+            show={this.state.show}
+            onHide={this.handleHide}>
+                <form>
+                    <Modal.Header closeButton>
+                        <Modal.Title id="contained-modal-title-lg">
+                            Edit comment - postItem.title
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                                        
+                        <FormGroup>
+                            <ControlLabel>Title</ControlLabel>
+                            <FormControl type="text"  defaultValue='postItem.title'/>
+                        </FormGroup>
+
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={this.handleHide}>Cancel</Button>
+                        <Button onClick={this.handleHide} bsStyle="success">Save changes</Button>
+                    </Modal.Footer>
+                </form>
+            </Modal>
             <Panel>
                 
                 <Panel.Body>
-
-                      
-
                     {
                         this.state.comments.map((c) => (
 
@@ -61,6 +96,7 @@ class PostComments extends Component {
                       
                 </Panel.Body>
             </Panel>
+            </div>
             );
           }
         }

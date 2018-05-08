@@ -1,11 +1,32 @@
 import React, { Component } from 'react';
-import { Panel, ButtonGroup, Button, Glyphicon, Media, Badge } from 'react-bootstrap';
+import { 
+    Panel, ButtonGroup, Button, Glyphicon, Media, 
+    Badge, Modal, FormGroup,ControlLabel, FormControl 
+    } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { voteForPost } from '../actions';
 import { Link } from 'react-router-dom';
 
+
 class PostsListItem extends Component {
+    constructor(props, context) {
+        super(props, context);
     
+        this.handleShow = this.handleShow.bind(this);
+        this.handleHide = this.handleHide.bind(this);
+    
+        this.state = {
+          show: false
+        };
+      }
+    
+      handleShow() {
+        this.setState({ show: true });
+      }
+    
+      handleHide() {
+        this.setState({ show: false });
+      }
   render() {
 
       const postId = this.props.postItemId;
@@ -13,6 +34,35 @@ class PostsListItem extends Component {
       const voteForPost = this.props.voteForPost;
       const singlePost = this.props.singlePost;
     return (
+        <div>
+        <Modal  
+          show={this.state.show}
+          onHide={this.handleHide}>
+        <form>
+        <Modal.Header closeButton>
+            <Modal.Title id="contained-modal-title-lg">
+                Edit post - {postItem.title}
+            </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+                            
+                            <FormGroup>
+                                <ControlLabel>Title</ControlLabel>
+                                <FormControl type="text"  defaultValue={postItem.title}/>
+                            </FormGroup>
+
+                            <FormGroup controlId="formControlsTextarea">
+                                <ControlLabel>Body</ControlLabel>
+                                <FormControl componentClass="textarea" placeholder="textarea" defaultValue={postItem.body}/>
+                            </FormGroup>
+        </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.handleHide}>Cancel</Button>
+            <Button onClick={this.handleHide} bsStyle="success">Save changes</Button>
+          </Modal.Footer>
+          </form>
+          </Modal>
+
             <Panel>
                 <Panel.Body>
                     <Media>
@@ -31,7 +81,7 @@ class PostsListItem extends Component {
                         </Media.Heading>
                         <p>{postItem.author} </p>     
                         <ButtonGroup>
-                                    <Button bsSize="xsmall">Edit</Button>
+                                    <Button bsSize="xsmall" onClick={this.handleShow}>Edit</Button>
                                     <Button bsStyle="danger" bsSize="xsmall">Delete</Button>
                                 </ButtonGroup> 
                         </Media.Body>
@@ -40,6 +90,7 @@ class PostsListItem extends Component {
                     { !singlePost || postItem.body } 
                 </Panel.Body>
             </Panel>
+            </div>
             );
           }
         }

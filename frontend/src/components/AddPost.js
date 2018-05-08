@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Panel, Button, FormGroup, FormControl, ControlLabel, InputGroup} from 'react-bootstrap';
+import { Panel, Button, FormGroup, FormControl, ControlLabel} from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 
