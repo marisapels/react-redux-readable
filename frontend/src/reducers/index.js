@@ -12,21 +12,21 @@ function categories(state = {categories: [], posts: [],postsSortBy:"timestamp"},
               ...state,
               categories: action.categories
               }
+              
       case LOAD_POSTS:
         return {
               ...state,
               posts: action.posts
               }
+
       case SORT_POSTS:
         return {
               ...state,
               postsSortBy: action.postsSortBy
               }
+
       case VOTE_FOR_POST:
-        
-      
       let posts = state.posts;
-     
         if (action.voteUp){
           posts.find(p => p.id === action.postId).voteScore ++
         }else{

@@ -3,9 +3,11 @@ import {
     Panel, Glyphicon, ButtonGroup, Button, FormGroup, FormControl, 
     ControlLabel, InputGroup, Modal} from 'react-bootstrap';
 import { connect } from 'react-redux';
+import ReactDOM from 'react-dom';
+import {changeCommentCount} from '../actions';
 
 
-import {fetchCommentsAPI} from '../utils/api.js';
+import {fetchCommentsAPI, voteForCommentApi, addCommentApi,deleteCommentApi,editCommentApi} from '../utils/api.js';
 
 class PostComments extends Component {
 
@@ -25,17 +27,71 @@ class PostComments extends Component {
     
         this.handleShow = this.handleShow.bind(this);
         this.handleHide = this.handleHide.bind(this);
+        this.handleEditComment = this.handleEditComment.bind(this);
     
       }
 
       handleShow(id,body) {
         this.setState({ show: true,modalCommentId:id,modalCommentBody:body });
+
        //console.log(id);
       }
     
       handleHide() {
         this.setState({ show: false });
       }
+      
+      handlePostUp(id,thumbUp){
+          let comments = this.state.comments;
+          if (thumbUp){
+                comments.find(c=>c.id === id).voteScore++;
+                }else{
+                comments.find(c=>c.id === id).voteScore--;  
+                }
+          this.setState({ comments });
+          voteForCommentApi(id,thumbUp);
+      }
+
+      handleAddComment = (e) => {
+
+        const uuidv4 = require('uuid/v4');
+        const timestamp = Math.floor(Date.now() / 1000);
+        const comment={
+                    "author":"webUser",
+                    "body":ReactDOM.findDOMNode(this.inputComment).value,
+                    "deleted":false,
+                    "id":uuidv4(),
+                    "parentDeleted": false,
+                    "parentId": this.props.postItemId,
+                    "timestamp": timestamp,
+                    "voteScore": 1
+                }
+        let comments = this.state.comments;
+        comments.push(comment);
+        this.props.changeCommentCount(this.props.postItemId,1);
+        this.setState({ comments });
+        addCommentApi(comment);
+    }
+
+    handleDeleteComment(id){
+        let comments = this.state.comments;
+        const pos = comments.map(function(e) { return e.id; }).indexOf(id);
+        comments.splice(pos,1);
+      
+        this.props.changeCommentCount(this.props.postItemId,-1);
+        this.setState({ comments });
+        deleteCommentApi(id);
+    }
+
+
+    handleEditComment(){
+        let comments = this.state.comments;
+        comments.find(c=>c.id === this.state.modalCommentId).body = ReactDOM.findDOMNode(this.editComment).value;
+        this.setState({ comments });
+        editCommentApi(this.state.modalCommentId,comments.find(c=>c.id === this.state.modalCommentId));
+        this.handleHide();
+    }
+
     
   render() {
       //const postId = this.props.postItemId;
@@ -60,13 +116,13 @@ class PostComments extends Component {
                     <Modal.Body>
                                         
                         
-                            <FormControl type="text"  defaultValue={this.state.modalCommentBody}/>
+                            <FormControl type="text"  defaultValue={this.state.modalCommentBody}  ref={(input) => this.editComment = input}/>
                        
 
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={this.handleHide}>Cancel</Button>
-                        <Button onClick={this.handleHide} bsStyle="success">Save changes</Button>
+                        <Button onClick={this.handleEditComment} bsStyle="success">Save changes</Button>
                     </Modal.Footer>
                 </form>
             </Modal>
@@ -79,12 +135,16 @@ class PostComments extends Component {
                           <div key={c.id}>
                            <b>{c.author}</b> 
                            
-                           <div className="pull-right"><Glyphicon glyph="thumbs-up" /> <b>{c.voteScore}</b> <Glyphicon glyph="thumbs-down" /> </div>
+                            <div className="pull-right">
+                                <Button  bsStyle="link" onClick={() => this.handlePostUp(c.id,true)}><Glyphicon glyph="thumbs-up"  /></Button>
+                                    <b>{c.voteScore}</b>
+                                <Button bsStyle="link" onClick={() => this.handlePostUp(c.id,false)}><Glyphicon glyph="thumbs-down" /></Button>
+                            </div>
                            <br/>{c.body}
                            <br/>
                            <ButtonGroup>
                                     <Button bsSize="xsmall" onClick={() => this.handleShow(c.id,c.body)}>Edit</Button>
-                                    <Button bsStyle="danger" bsSize="xsmall">Delete</Button>
+                                    <Button bsStyle="danger"  bsSize="xsmall" onClick={() => this.handleDeleteComment(c.id)}>Delete</Button>
                             </ButtonGroup> 
                            <hr/>
                           </div>
@@ -95,9 +155,9 @@ class PostComments extends Component {
                             <FormGroup>
                             <ControlLabel>Add comment:</ControlLabel>
                                 <InputGroup>
-                                <FormControl type="text" />
+                                <FormControl type="text" ref={(input) => this.inputComment = input} />
                                 <InputGroup.Button>
-                                    <Button>Submit</Button>
+                                    <Button onClick={this.handleAddComment}>Submit</Button>
                                 </InputGroup.Button>
                                 </InputGroup>
                             </FormGroup>
@@ -115,15 +175,14 @@ class PostComments extends Component {
     function mapStateToProps(state, ownProps) {
 
         return {
-            
-            //postItem:state.posts.find(p => p.id === ownProps.postItemId)
+            postItem:state.posts.find(p => p.id === ownProps.postItemId)
         };
       }
 
 
 const mapDispatchToProps = (dispatch) => {
         return{
-           // voteForPost: (postId,voteUp) => dispatch(voteForPost(postId,voteUp))
+             changeCommentCount: (postId,coif) => dispatch(changeCommentCount(postId,coif))
           }
         }
 
