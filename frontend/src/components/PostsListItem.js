@@ -107,7 +107,9 @@ class PostsListItem extends Component {
             postItem:state.posts.find(p => p.id === ownProps.postItemId),
 
             //need to add it here for score to change when using postItem.voteScore
-            voteScore:state.posts.find(p => p.id === ownProps.postItemId).voteScore
+            voteScore:state.posts.find(p => p.id === ownProps.postItemId).voteScore,
+            commentCount:state.posts.find(p => p.id === ownProps.postItemId).commentCount,
+            
         };
       }
 

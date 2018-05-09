@@ -6,6 +6,7 @@ export const SORT_POSTS = 'SORT_POSTS';
 export const VOTE_FOR_POST = 'VOTE_FOR_POST';
 export const VOTE_FOR_COMMENT = 'VOTE_FOR_COMMENT';
 export const CHANGE_COMMENT_COUNT = 'CHANGE_COMMENT_COUNT';
+export const ADD_POST = 'ADD_POST';
 //export const SET_ACTIVE_CATEGORY = 'SET_ACTIVE_CATEGORY';
 
 export const loadCategories = categories => ({
@@ -31,13 +32,19 @@ export function voteForPost(postId,voteUp) {
     }
   }
 
-  export function changeCommentCount(postId,voteUp) {
+  export function changeCommentCount(postId,coif) {
     return { 
-        type: VOTE_FOR_POST, 
-        postId,voteUp    
+        type: CHANGE_COMMENT_COUNT, 
+        postId,coif    
     }
   }
 
+  export function addPost(post) {
+    return { 
+        type: CHANGE_COMMENT_COUNT, 
+        post
+    }
+  }
   
 
 //  export function voteForComment(commentId,voteUp) {

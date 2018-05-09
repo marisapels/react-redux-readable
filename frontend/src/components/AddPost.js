@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { Panel, Button, FormGroup, FormControl, ControlLabel} from 'react-bootstrap';
 import { connect } from 'react-redux';
+import {addPost} from '../actions';
 
 
 class PostComments extends Component {
 
-
+handleAddPost(){
+console.log("aaa")
+}
     
   render() {
 
@@ -39,7 +42,7 @@ class PostComments extends Component {
 
 
 
-                            <Button>Submit</Button>
+                            <Button onClick={this.handleAddPost}>Submit</Button>
                             
                         </form>
                       
@@ -62,7 +65,7 @@ class PostComments extends Component {
 
 const mapDispatchToProps = (dispatch) => {
         return{
-           // voteForPost: (postId,voteUp) => dispatch(voteForPost(postId,voteUp))
+             addPost: (post) => dispatch(addPost(post))
           }
         }
 

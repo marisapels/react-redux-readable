@@ -2,10 +2,14 @@ import {
   LOAD_CATEGORIES,
   LOAD_POSTS,
   SORT_POSTS,
-  VOTE_FOR_POST
+  VOTE_FOR_POST,
+  CHANGE_COMMENT_COUNT,
+  ADD_POST
   } from '../actions';
 
 function categories(state = {categories: [], posts: [],postsSortBy:"timestamp"}, action) {
+   let posts = state.posts;
+
     switch (action.type) {
       case LOAD_CATEGORIES:
         return {
@@ -26,17 +30,39 @@ function categories(state = {categories: [], posts: [],postsSortBy:"timestamp"},
               }
 
       case VOTE_FOR_POST:
-      let posts = state.posts;
+      
         if (action.voteUp){
           posts.find(p => p.id === action.postId).voteScore ++
         }else{
           posts.find(p => p.id === action.postId).voteScore --
         } 
-
         return {
               ...state,
               posts
         }
+
+
+        case CHANGE_COMMENT_COUNT:
+        posts.find(p => p.id === action.postId).commentCount += action.coif;
+        return {
+          ...state,
+          posts
+      }
+
+      case CHANGE_COMMENT_COUNT:
+      posts.find(p => p.id === action.postId).commentCount += action.coif;
+      return {
+        ...state,
+        posts
+    }
+
+    case CHANGE_COMMENT_COUNT:
+    posts.add(action.post);
+    return {
+      ...state,
+      posts
+  }
+
       default:
         return state;
     }
