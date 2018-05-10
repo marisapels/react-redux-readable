@@ -8,6 +8,6 @@ Use npm install from command prompt or terminal in project folder.
 * If you don't have npm, please download and install ir from https://www.npmjs.com/get-npm.
 
 ## Run
-From command prompt or terminal:
-Use "node server.js" command in api-server folder to start api for app.
+From command prompt or terminal:<br />
+Use "node server.js" command in api-server folder to start api for app.<br />
 Use "npm start" command from command prompt or terminal to testrun the app.
