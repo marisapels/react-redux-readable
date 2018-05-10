@@ -12,12 +12,13 @@ class PostsList extends Component {
 
     componentDidMount(){ 
       fetchAllPostsAPI().then(posts => {
-        this.props.loadPosts(posts.filter((p) => p.deleted !== true));
+        this.props.loadPosts(posts);
       });
     }
 
     render() {
       let { posts } = this.props;
+
       if (this.props.match.params.category)
           posts = posts.filter((p) => p.category === this.props.match.params.category);
           posts.sort(sortBy(this.props.postsSortBy)).reverse();
@@ -35,7 +36,7 @@ class PostsList extends Component {
         }
 
         const mapStateToProps = (state) => ({
-          posts:state.posts,
+          posts:state.posts.filter((p) => p.deleted !== true),
           postsSortBy:state.postsSortBy
           })
           

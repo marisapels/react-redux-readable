@@ -4,8 +4,9 @@ import {
     Badge, Modal, FormGroup,ControlLabel, FormControl 
     } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { voteForPost } from '../actions';
+import { voteForPost,deletePost, editPost } from '../actions';
 import { Link } from 'react-router-dom';
+import ReactDOM from 'react-dom';
 
 
 class PostsListItem extends Component {
@@ -27,12 +28,23 @@ class PostsListItem extends Component {
       handleHide() {
         this.setState({ show: false });
       }
+
+     handleEditPost= (e) =>  {
+        console.log(ReactDOM.findDOMNode(this.inputEditTitle).value);
+        this.props.editPost(
+            this.props.postItemId,
+            ReactDOM.findDOMNode(this.inputEditTitle).value,
+            ReactDOM.findDOMNode(this.inputEditBody).value);
+        this.setState({ show: false });
+     }
+
   render() {
 
       const postId = this.props.postItemId;
       const postItem = this.props.postItem;
       const voteForPost = this.props.voteForPost;
       const singlePost = this.props.singlePost;
+      const deletePost = this.props.deletePost;
     return (
         <div>
         <Modal  
@@ -48,17 +60,17 @@ class PostsListItem extends Component {
                             
                             <FormGroup>
                                 <ControlLabel>Title</ControlLabel>
-                                <FormControl type="text"  defaultValue={postItem.title}/>
+                                <FormControl type="text"  defaultValue={postItem.title}  ref={(input) => this.inputEditTitle = input}/>
                             </FormGroup>
 
                             <FormGroup controlId="formControlsTextarea">
                                 <ControlLabel>Body</ControlLabel>
-                                <FormControl componentClass="textarea" placeholder="textarea" defaultValue={postItem.body}/>
+                                <FormControl componentClass="textarea" placeholder="textarea" defaultValue={postItem.body} ref={(input) => this.inputEditBody = input}/>
                             </FormGroup>
         </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.handleHide}>Cancel</Button>
-            <Button onClick={this.handleHide} bsStyle="success">Save changes</Button>
+            <Button onClick={this.handleEditPost} bsStyle="success">Save changes</Button>
           </Modal.Footer>
           </form>
           </Modal>
@@ -82,7 +94,7 @@ class PostsListItem extends Component {
                         <p>{postItem.author} </p>     
                         <ButtonGroup>
                                     <Button bsSize="xsmall" onClick={this.handleShow}>Edit</Button>
-                                    <Button bsStyle="danger" bsSize="xsmall">Delete</Button>
+                                    <Button bsStyle="danger" bsSize="xsmall" onClick={function(){deletePost(postId)}}>Delete</Button>
                                 </ButtonGroup> 
                         </Media.Body>
                         
@@ -116,9 +128,9 @@ class PostsListItem extends Component {
 
 const mapDispatchToProps = (dispatch) => {
         return{
-            voteForPost: (postId,voteUp) => dispatch(voteForPost(postId,voteUp))/*,
-          sortPosts: (postsSortBy) => dispatch(sortPosts(postsSortBy))
-          */
+            voteForPost: (postId,voteUp) => dispatch(voteForPost(postId,voteUp)),
+            deletePost: (postId) => dispatch(deletePost(postId)),
+            editPost: (postId,title,body) => dispatch(editPost(postId,title,body))
           }
         }
 

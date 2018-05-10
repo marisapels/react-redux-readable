@@ -68,3 +68,27 @@ export function editCommentApi (commentId,comment) {
   body: JSON.stringify(comment)
 }).then(res => res.json())  
 }
+
+export function addPostApi (comment) {
+ 
+  return fetch(`${myApiHost}/posts`,{
+  method: 'POST',
+  headers: { 'Authorization': 'whatever-you-want','Content-Type': 'application/json' },
+  body: JSON.stringify(comment)
+}).then(res => res.json())
+}
+
+export function deletePostApi (postId) {
+  return fetch(`${myApiHost}/posts/${postId}`,{
+  method: 'DELETE',
+  headers: { 'Authorization': 'whatever-you-want','Content-Type': 'application/json' }
+}).then(res => res.json())
+}
+
+export function editPostApi (postId,postContents) {
+  return fetch(`${myApiHost}/posts/${postId}`,{
+  method: 'PUT',
+  headers: { 'Authorization': 'whatever-you-want','Content-Type': 'application/json' },
+  body: JSON.stringify(postContents)
+}).then(res => res.json())  
+}

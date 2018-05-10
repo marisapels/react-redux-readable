@@ -22,6 +22,7 @@ class PostDetails extends Component {
     posts = posts.filter((p) => p.id === this.props.postItemId);
     return (
             <Jumbotron>
+              {posts.length>0||"That's 404- not found page ;)"}
                  {posts.map((postItem) => (
                           <div key={postItem.id}>
                           <PostsListItem key={"post"+postItem.id} postItemId={postItem.id} singlePost />
@@ -38,7 +39,8 @@ class PostDetails extends Component {
 
 
         const mapStateToProps = (state) => ({
-            posts:state.posts
+   
+            posts:state.posts.filter((p) => p.deleted !== true)
             })
             
         const mapDispatchToProps = (dispatch) => {

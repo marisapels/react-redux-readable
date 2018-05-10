@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Navbar, NavItem, Nav} from 'react-bootstrap';
+import {Navbar, NavItem, Nav, Button } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import {LinkContainer} from 'react-router-bootstrap';
 import { connect } from 'react-redux';
@@ -34,7 +34,12 @@ class TopNavigation extends Component {
                     </LinkContainer> 
                     ))
                     }
-                  </Nav>
+                    </Nav>
+                    <Navbar.Form pullRight>
+                    <LinkContainer to={`/addPost`}  >
+                       <Button  bsStyle="success">Add new post</Button>
+                    </LinkContainer>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </Navbar.Form>
                 </Navbar>
                 );
               }
@@ -48,25 +53,11 @@ class TopNavigation extends Component {
       const mapDispatchToProps = (dispatch) => {
           return{
             loadCategories: (categories) => dispatch(loadCategories(categories))
-            //setActiveCategory: (selectedCategory) => dispatch(setActiveCategory(selectedCategory))
             }
           }
 
 export default connect(mapStateToProps,mapDispatchToProps)(TopNavigation);
 
-/*
-    const mapStateToProps = (state) => ({
-        selectedCategory:state.selectedCategory
-        })
-        
-    const mapDispatchToProps = (dispatch) => {
-        return{
-            setActiveCategory: (selectedCategory) => dispatch(setActiveCategory(selectedCategory))
-          }
-        }
-
-export default withRouter(connect(mapStateToProps,mapDispatchToProps)(App))
-*/
 
 
 
